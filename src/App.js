@@ -10,12 +10,26 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import {Routes, Route} from "react-router";
 import {BrowserRouter} from "react-router-dom";
 import Navigation from "./navigation";
+import Users from "./users";
+import usersReducer from "./users/users-reducer";
+import Login from "./users/login";
+import Register from "./users/register";
+import CurrentUser from "./users/current-user";
+import Profile from "./users/profile";
+import ProtectedRoute from "./users/protected-route";
+import OmdbDetails from "./omdb/omdb-details";
+import reviewsReducer from "./reviews/reviews-reducer";
+import PublicProfile from "./users/public-profile";
+import followsReducer from "./follows/follows-reducer";
 
 const store = configureStore({
     reducer: {
         movies: moviesReducer,
         omdb: omdbReducer,
-        likes: likesReducer
+        likes: likesReducer,
+        users: usersReducer,
+        reviews: reviewsReducer,
+        follows: followsReducer
     }
 })
 
@@ -24,11 +38,27 @@ function App() {
         <div className="container mt-4 mb-4">
             <Provider store={store}>
                 <BrowserRouter>
-                    <Navigation/>
-                    <Routes>
-                        <Route index element={<Movies/>}/>
-                        <Route path="/search" element={<OmdbSearch/>}/>
-                    </Routes>
+                    <CurrentUser>
+                        <Navigation/>
+                        <Routes>
+                            <Route index element={<Movies/>}/>
+                            <Route path="/search" element={<OmdbSearch/>}/>
+                            <Route path="/users" element={
+                                <ProtectedRoute>
+                                    <Users/>
+                                </ProtectedRoute>
+                            }/>
+                            <Route path="/login" element={<Login/>}/>
+                            <Route path="/register" element={<Register/>}/>
+                            <Route path="/profile" element={
+                                <ProtectedRoute>
+                                    <Profile/>
+                                </ProtectedRoute>
+                            }/>
+                            <Route path="/details/:imdbID" element={<OmdbDetails/>}/>
+                            <Route path="/profile/:uid" element={<PublicProfile/>}/>
+                        </Routes>
+                    </CurrentUser>
                 </BrowserRouter>
             </Provider>
         </div>

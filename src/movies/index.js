@@ -4,6 +4,7 @@ import {createMoviesThunk, deleteMovieThunk, findAllMoviesThunk} from "./movies-
 import {userLikesMovieThunk} from "../likes/likes-thunks";
 
 const Movies = () => {
+    const {currentUser} = useSelector((state) => state.users)
     const {movies} = useSelector((state) => state.movies)
     const [movie, setMovie] = useState({title: 'New Movie'})
     const dispatch = useDispatch()
@@ -13,6 +14,10 @@ const Movies = () => {
     return(
         <>
             <h1>Movies</h1>
+            {
+                currentUser &&
+                <h2>Welcome {currentUser.username} </h2>
+            }
             <ul className="list-group">
                 <li className="list-group-item">
                     <button className="btn btn-success float-end" onClick={() => {
@@ -39,7 +44,7 @@ const Movies = () => {
 
                             <i onClick={() => {
                                 dispatch(userLikesMovieThunk({
-                                    uid: 111, mid: movie.imdbID
+                                    uid: 111, mid: movie._id//imdbID
                                 }))
                             }} className="float-end bi bi-hand-thumbs-up me-2"></i>
                             <i className="float-end bi bi-hand-thumbs-down me-2"></i>
