@@ -1,0 +1,90 @@
+import {useNavigate, useParams} from "react-router";
+import {useDispatch, useSelector} from "react-redux";
+import {useEffect, useState} from "react";
+import {findCourseByIdThunk, findCoursesThunk} from "./course-thunks";
+import {createReviewThunk, findReviewsByCourseThunk} from "../reviews/reviews-thunks";
+import {Link} from "react-router-dom";
+import {followUserThunk} from "../follows/follows-thunks";
+import Button from "bootstrap/js/src/button";
+import {deleteMovieThunk} from "../movies/movies-thunks";
+import ReviewItem from "../reviews/review-item";
+
+const CourseDetails = () => {
+    const {cid} = useParams()
+    let [courseReview, setCourseReview] = useState('');
+    let [courseScore, setCourseScore] = useState(1);
+    const {reviews} = useSelector((state) => state.reviews)
+    const {details} = useSelector((state) => state.omdb)
+    const {currentUser} = useSelector((state) => state.users)
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    const reviewClickHandler = () => {
+        const newReview = {
+            review: courseReview,
+            score: courseScore,
+            author: currentUser._id,
+            course: cid
+        };
+        if (currentUser) {
+            console.log("USER")
+            console.log(currentUser)
+            dispatch(createReviewThunk(newReview));
+        } else {
+            navigate('/login')
+        }
+    }
+    useEffect(() => {
+        dispatch(findCoursesThunk())
+        dispatch(findCourseByIdThunk(cid))
+        dispatch(findReviewsByCourseThunk(cid))
+    },[])
+
+    return(
+        <>
+            <h1>{details.name} {details.courseNumber}</h1>
+            <div className="row">
+                <div className="col">
+                    <ul className="list-group">
+                        <li className="list-group-item">Department: {details.department}</li>
+                        <li className="list-group-item">Course Number: {details.courseNumber}</li>
+                        <li className="list-group-item">Course Name: {details.name}</li>
+                        <li className="list-group-item">Section: {details.section}</li>
+                        {/*<li className="list-group-item">Average Rating: {}</li>*/}
+                    </ul>
+                </div>
+
+            </div>
+
+            <h2>Reviews</h2>
+
+            <textarea value={courseReview} placeholder="Your review here."
+                      className="form-control border-1"
+                      onChange={(event) => setCourseReview(event.target.value)}>
+            </textarea>
+            Score:
+            <input type="number" value={courseScore}
+                      className="border-1"
+                      onChange={(event) => setCourseScore(event.target.value)}>
+            </input>
+            <br/>
+            <button className="rounded-pill btn btn-primary mt-2 ps-3 pe-3 fw-bold"
+                    onClick={reviewClickHandler}>
+                Post Review
+            </button>
+            <br/>
+            <br/>
+            <ul className="list-group">
+                {
+                    reviews.map((review) =>
+                        <ReviewItem key={review._id} review={review}/>
+                    )
+                }
+            </ul>
+            {/*<pre>*/}
+            {/*    {JSON.stringify(details, null, 2)}*/}
+            {/*</pre>*/}
+        </>
+    )
+}
+export default CourseDetails

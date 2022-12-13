@@ -1,7 +1,10 @@
 import {useDispatch, useSelector} from "react-redux";
-import {logoutThunk, updateUserThunk} from "./users-thunk";
+import {findUserByIdThunk, logoutThunk, updateUserThunk} from "./users-thunk";
 import {useNavigate} from "react-router";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
+import {Link} from "react-router-dom";
+import {findFollowersThunk, findFollowingThunk, followUserThunk} from "../follows/follows-thunks";
+import {findReviewsByAuthorThunk} from "../reviews/reviews-thunks";
 
 const Profile = () => {
     const navigate = useNavigate()
@@ -11,7 +14,14 @@ const Profile = () => {
     let [email, setEmail] = useState(currentUser.email)
     let [firstName, setFirtName] = useState(currentUser.firstName)
     let [lastName, setLastName] = useState(currentUser.lastName)
+    const {followers, following} = useSelector((state) => state.follows)
 
+    useEffect(() => {
+        dispatch(findUserByIdThunk(currentUser._id))
+        dispatch(findReviewsByAuthorThunk(currentUser._id))
+        dispatch(findFollowersThunk(currentUser._id))
+        dispatch(findFollowingThunk(currentUser._id))
+    }, [currentUser._id])
     const dispatch = useDispatch()
     const updateUserInfoHandler = () => {
         const updatedUser = {
@@ -89,6 +99,27 @@ const Profile = () => {
                 <hr/>
             </>
             <></>
+            <h2>Following</h2>
+            <div className="list-group">
+                {
+                    following && following.map((follow) =>
+                        <Link to={`/profile/${follow.followed._id}`} className="list-group-item">
+                            {follow.followed.username}
+                        </Link>
+                    )
+                }
+            </div>
+
+            <h2>Followers</h2>
+            <div className="list-group">
+                {
+                    followers && followers.map((follow) =>
+                        <Link to={`/profile/${follow.follower._id}`} className="list-group-item">
+                            {follow.follower.username}
+                        </Link>
+                    )
+                }
+            </div>
         </>
     )
 }

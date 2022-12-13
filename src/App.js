@@ -2,8 +2,8 @@ import Movies from "./movies";
 import moviesReducer from "./movies/movies-reducer";
 import {configureStore} from "@reduxjs/toolkit";
 import {Provider} from "react-redux";
-import omdbReducer from "./omdb/omdb-reducer";
-import OmdbSearch from "./omdb/omdb-search";
+import courseReducer from "./courses/course-reducer";
+import CourseSearch from "./courses/course-search";
 import {likesReducer} from "./likes/likes-reducer";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -17,7 +17,7 @@ import Register from "./users/register";
 import CurrentUser from "./users/current-user";
 import Profile from "./users/profile";
 import ProtectedRoute from "./users/protected-route";
-import OmdbDetails from "./omdb/omdb-details";
+import CourseDetails from "./courses/course-details";
 import reviewsReducer from "./reviews/reviews-reducer";
 import PublicProfile from "./users/public-profile";
 import followsReducer from "./follows/follows-reducer";
@@ -25,7 +25,7 @@ import followsReducer from "./follows/follows-reducer";
 const store = configureStore({
     reducer: {
         movies: moviesReducer,
-        omdb: omdbReducer,
+        omdb: courseReducer,
         likes: likesReducer,
         users: usersReducer,
         reviews: reviewsReducer,
@@ -42,7 +42,7 @@ function App() {
                         <Navigation/>
                         <Routes>
                             <Route index element={<Movies/>}/>
-                            <Route path="/search" element={<OmdbSearch/>}/>
+                            <Route path="/search" element={<CourseSearch/>}/>
                             <Route path="/users" element={
                                 <ProtectedRoute>
                                     <Users/>
@@ -55,7 +55,7 @@ function App() {
                                     <Profile/>
                                 </ProtectedRoute>
                             }/>
-                            <Route path="/details/:imdbID" element={<OmdbDetails/>}/>
+                            <Route path="/details/:cid" element={<CourseDetails/>}/>
                             <Route path="/profile/:uid" element={<PublicProfile/>}/>
                         </Routes>
                     </CurrentUser>

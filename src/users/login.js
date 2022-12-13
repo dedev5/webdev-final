@@ -5,8 +5,8 @@ import {Navigate, useNavigate} from "react-router";
 
 const Login = () => {
     const {currentUser} = useSelector((state) => state.users)
-    const [username, setUsername] = useState('alice')
-    const [password, setPassword] = useState('alice1234')
+    const [username, setUsername] = useState('ExampleUser')
+    const [password, setPassword] = useState('ExampleUser')
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const handleLoginBtn = () => {

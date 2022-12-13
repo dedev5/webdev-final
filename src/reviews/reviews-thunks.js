@@ -1,16 +1,34 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {createReview, findReviewsByAuthor, findReviewsByMovie} from "./reviews-service";
+import {createReview, deleteReview, findReviewsByAuthor, findReviewsByCourse} from "./reviews-service";
+import {findUserById} from "../users/users-service";
 
 export const createReviewThunk = createAsyncThunk(
     'createReview',
-    async (review) => createReview(review)
+    async (review) =>
+    {
+        const response = await createReview(review)
+        // Fill the author field out.
+        response.author = await findUserById(response.author)
+        console.log(response.author)
+        return response
+    }
 )
-export const findReviewsByMovieThunk = createAsyncThunk(
-    'findReviewsByMovieThunk',
-    async (imdbID) => findReviewsByMovie(imdbID)
 
+export const deleteReviewThunk = createAsyncThunk(
+    'deleteReview',
+    async (reviewId) => {
+        await deleteReview(reviewId)
+        return reviewId
+    }
 )
+
+export const findReviewsByCourseThunk = createAsyncThunk(
+    'findReviewsByMovieThunk',
+    async (cid) => findReviewsByCourse(cid)
+)
+
 export const findReviewsByAuthorThunk = createAsyncThunk(
     'findReviewsByAuthorThunk',
     async (author) => findReviewsByAuthor(author)
 )
+
