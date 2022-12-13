@@ -6,7 +6,7 @@ import {Link} from "react-router-dom";
 
 const CourseSearch = () => {
     const [searchTerm, setSearchTerm] = useState('Software Development')
-    const {movies, loading} = useSelector((state) => state.omdb)
+    const {courses, loading} = useSelector((state) => state.courses)
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(findCourseBySearchTermThunk(searchTerm))
@@ -29,7 +29,7 @@ const CourseSearch = () => {
                         value={searchTerm}/>
                 </li>
                 {
-                    movies && movies.map((course) =>
+                    courses && courses.map((course) =>
                         <li key={course._id} className="list-group-item">
                             {/*<i onClick={() => {*/}
                             {/*    dispatch(userLikesMovieThunk({*/}

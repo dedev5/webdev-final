@@ -1,9 +1,9 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {findCourseBySearchTerm} from "./course-service";
-import {findCourseByIdThunk, findCourseBySearchTermThunk} from "./course-thunks";
+import {findCourseByIdThunk, findCourseBySearchTermThunk, findCoursesThunk} from "./course-thunks";
 
 const initialState = {
-    movies: [],
+    courses: [],
     loading: false,
     details: {}
 }
@@ -12,8 +12,11 @@ const courseReducer = createSlice({
     name: 'course',
     initialState,
     extraReducers: {
+        [findCoursesThunk.fulfilled]: (state, action) => {
+            state.courses = action.payload
+        },
         [findCourseBySearchTermThunk.fulfilled]: (state, action) => {
-            state.movies = action.payload
+            state.courses = action.payload
         },
         [findCourseByIdThunk.fulfilled]: (state, action) => {
             state.details = action.payload

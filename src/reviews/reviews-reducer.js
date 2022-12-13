@@ -5,6 +5,7 @@ import {
     findReviewsByAuthorThunk,
     findReviewsByCourseThunk
 } from "./reviews-thunks";
+import {findAllReviewsThunk} from "../movies/movies-thunks";
 
 const reviewsReducer = createSlice({
     name: 'reviews',
@@ -14,6 +15,9 @@ const reviewsReducer = createSlice({
     extraReducers: {
         [createReviewThunk.fulfilled]: (state, action) => {
             state.reviews.push(action.payload)
+        },
+        [findAllReviewsThunk.fulfilled]: (state, action) => {
+            state.reviews = action.payload
         },
         [findReviewsByCourseThunk.fulfilled]: (state, action) => {
             state.reviews = action.payload

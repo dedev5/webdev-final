@@ -1,14 +1,14 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {findAllMovies, createMovie, deleteMovie} from "./movies-service";
+import {findAllReviews, createMovie, deleteMovie} from "./movies-service";
 
 export const createMoviesThunk = createAsyncThunk(
     'createMovie',
     (newMovie) => createMovie(newMovie)
 )
 
-export const findAllMoviesThunk = createAsyncThunk(
+export const findAllReviewsThunk = createAsyncThunk(
     'findAllMovies',
-    () => findAllMovies()
+    () => findAllReviews()
 )
 
 export const updateMovieThunk = {}

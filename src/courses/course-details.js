@@ -3,10 +3,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {findCourseByIdThunk, findCoursesThunk} from "./course-thunks";
 import {createReviewThunk, findReviewsByCourseThunk} from "../reviews/reviews-thunks";
-import {Link} from "react-router-dom";
-import {followUserThunk} from "../follows/follows-thunks";
-import Button from "bootstrap/js/src/button";
-import {deleteMovieThunk} from "../movies/movies-thunks";
 import ReviewItem from "../reviews/review-item";
 
 const CourseDetails = () => {
@@ -14,7 +10,7 @@ const CourseDetails = () => {
     let [courseReview, setCourseReview] = useState('');
     let [courseScore, setCourseScore] = useState(1);
     const {reviews} = useSelector((state) => state.reviews)
-    const {details} = useSelector((state) => state.omdb)
+    const {details} = useSelector((state) => state.courses)
     const {currentUser} = useSelector((state) => state.users)
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -65,7 +61,9 @@ const CourseDetails = () => {
             Score:
             <input type="number" value={courseScore}
                       className="border-1"
-                      onChange={(event) => setCourseScore(event.target.value)}>
+                      onChange={(event) => {
+                          const clamped = Math.min(5,Math.max(parseInt(event.target.value),1))
+                          return setCourseScore(clamped)}}>
             </input>
             <br/>
             <button className="rounded-pill btn btn-primary mt-2 ps-3 pe-3 fw-bold"

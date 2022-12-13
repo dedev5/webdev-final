@@ -1,4 +1,4 @@
-import Movies from "./movies";
+import HomePage from "./movies";
 import moviesReducer from "./movies/movies-reducer";
 import {configureStore} from "@reduxjs/toolkit";
 import {Provider} from "react-redux";
@@ -24,8 +24,7 @@ import followsReducer from "./follows/follows-reducer";
 
 const store = configureStore({
     reducer: {
-        movies: moviesReducer,
-        omdb: courseReducer,
+        courses: courseReducer,
         likes: likesReducer,
         users: usersReducer,
         reviews: reviewsReducer,
@@ -41,7 +40,7 @@ function App() {
                     <CurrentUser>
                         <Navigation/>
                         <Routes>
-                            <Route index element={<Movies/>}/>
+                            <Route index element={<HomePage/>}/>
                             <Route path="/search" element={<CourseSearch/>}/>
                             <Route path="/users" element={
                                 <ProtectedRoute>

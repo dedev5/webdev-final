@@ -12,10 +12,12 @@ const ReviewItem = (props) => {
     const deleteReviewHandler = (reviewId) => {
         dispatch(deleteReviewThunk(review._id))
     }
+    const canDeletePost = currentUser && (currentUser.role === "ADMIN" || currentUser._id === review.author._id)
+
     return (
         <li className="list-group-item">
             {
-                currentUser &&
+                canDeletePost &&
                 <i className="bi bi-x-lg float-end"
                    onClick={() => deleteReviewHandler(review._id)}></i>
             }

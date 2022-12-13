@@ -6,6 +6,7 @@ import {findReviewsByAuthor} from "../reviews/reviews-service";
 import {findReviewsByAuthorThunk} from "../reviews/reviews-thunks";
 import {Link} from "react-router-dom";
 import {findFollowersThunk, findFollowingThunk, followUserThunk} from "../follows/follows-thunks";
+import ReviewItem from "../reviews/review-item";
 
 
 
@@ -17,9 +18,10 @@ const PublicProfile = () => {
     const {currentUser} = useSelector((state) => state.users)
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const handleUnFollowBtn = () => {
+    const users_reviews = reviews.filter(
+        review => review.author._id === uid).slice(-5);
+    let isFollowing = currentUser && followers.map(follower => follower.follower._id).includes(currentUser._id)
 
-    }
     const handleFollowBtn = () => {
         if (currentUser) {
             dispatch(followUserThunk({
@@ -30,6 +32,7 @@ const PublicProfile = () => {
             navigate('/login')
         }
     }
+
     useEffect(() => {
         dispatch(findUserByIdThunk(uid))
         dispatch(findReviewsByAuthorThunk(uid))
@@ -39,39 +42,19 @@ const PublicProfile = () => {
     return(
         <>
             <>
+
                 <button
                     onClick={handleFollowBtn}
-                    className="btn btn-success float-end">
+                    className="btn btn-success float-end"
+                    disabled={isFollowing}>
                     Follow
                 </button>
             </>
-
-            {/*<>*/}
-            {/*    {!(following) && <button*/}
-            {/*    onClick={handleUnFollowBtn}*/}
-            {/*    className="btn btn-danger float-end">*/}
-            {/*    UnFollow*/}
-            {/*</button>}*/}
-            {/*</>*/}
-
-
-            <h1>{publicProfile && publicProfile.username}</h1>
-            <h2>First Name: {publicProfile && publicProfile.firstName}</h2>
-            <h2>Last Name: {publicProfile && publicProfile.lastName}</h2>
-
-            <ul>
-                {
-                    reviews && reviews.map((review) =>
-                    <li>
-                        <Link to={`/reviews/${review._id}`}>
-                        {review.review}
-                        </Link>
-                    </li>
-                    )
-                }
-            </ul>
-
-            <h2>Following</h2>
+            <h1>{publicProfile && publicProfile.username}'s Pofile</h1>
+            Name:
+            <h3>{publicProfile && publicProfile.firstName} {publicProfile && publicProfile.lastName}</h3>
+            <br/>
+            <h2>Following:</h2>
             <div className="list-group">
                 {
                     following && following.map((follow) =>
@@ -81,8 +64,8 @@ const PublicProfile = () => {
                     )
                 }
             </div>
-
-            <h2>Followers</h2>
+            <br/>
+            <h2>Followers:</h2>
             <div className="list-group">
                 {
                     followers && followers.map((follow) =>
@@ -92,6 +75,16 @@ const PublicProfile = () => {
                     )
                 }
             </div>
+            <br/>
+            <h2>Reviews:</h2>
+
+            <ul className="list-group">
+                {
+                    users_reviews && users_reviews.map((review) =>
+                        <ReviewItem key={review._id} review={review}/>
+                    )
+                }
+            </ul>
         </>
     )
 }

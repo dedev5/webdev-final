@@ -1,19 +1,19 @@
 import axios from "axios";
-const MOVIE_API_URL = 'http://localhost:4000/movies'
+const REVIEW_API_URL = 'http://localhost:4000/api/reviews'
 
 export const createMovie = async (newMovie) => {
-    const response = await axios.post(MOVIE_API_URL, newMovie)
+    const response = await axios.post(REVIEW_API_URL, newMovie)
     const actualMovie = response.data
     return actualMovie
 }
-export const findAllMovies = async () => {
-    const response = await axios.get(MOVIE_API_URL)
-    const movies = response.data
-    return movies
+export const findAllReviews = async () => {
+    const response = await axios.get(REVIEW_API_URL)
+    const reviews = response.data
+    return reviews
 }
 export const updateMovie = async () => {}
 export const deleteMovie = async (mid) => {
-    const response = await axios.delete(`${MOVIE_API_URL}/${mid}`)
+    const response = await axios.delete(`${REVIEW_API_URL}/${mid}`)
     const status = response.data
     return mid;
 }

@@ -1,8 +1,8 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {createMoviesThunk, deleteMovieThunk, findAllMoviesThunk} from "./movies-thunks";
+import {createMoviesThunk, deleteMovieThunk, findAllReviewsThunk} from "./movies-thunks";
 
 const initialState = {
-    movies: [],
+    reviews: [],
     loading: true
 }
 
@@ -10,7 +10,7 @@ const moviesReducer = createSlice({
     name: 'movies',
     initialState: initialState,
     extraReducers: {
-        [findAllMoviesThunk.fulfilled]: (state, action) => {
+        [findAllReviewsThunk.fulfilled]: (state, action) => {
             state.movies = action.payload
         },
         [createMoviesThunk.fulfilled]: (state, action) => {

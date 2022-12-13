@@ -20,7 +20,7 @@ const Navigation = () => {
                     Search
                 </Link>
             </li>
-            <li className={`nav-item ${!currentUser ? 'd-none':''}`}>
+            <li className={`nav-item ${!currentUser || currentUser.role !== 'ADMIN' ? 'd-none':''}`}>
                 <Link to="/users"
                       className={`nav-link ${parts[1] === 'users'?'active': ''}`}>
                     Users
