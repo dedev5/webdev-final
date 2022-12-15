@@ -13,6 +13,13 @@ export const createReview = async (review) => {
 
 export const deleteReview = async (reviewId) => {
     const response = await api.delete(`${REVIEW_API}/${reviewId}`)
+    return response
+}
+
+export const findAllReviews = async () => {
+    const response = await axios.get(REVIEW_API)
+    const reviews = response.data
+    return reviews
 }
 
 export const findReviewsByCourse = async (imdbID) => {
@@ -24,3 +31,5 @@ export const findReviewsByAuthor = async (author) => {
     const response = await api.get(`${AUTHOR_REVIEWS_API}/${author}/reviews`)
     return response.data
 }
+
+

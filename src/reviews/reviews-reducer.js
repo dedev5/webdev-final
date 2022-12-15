@@ -3,9 +3,9 @@ import {
     createReviewThunk,
     deleteReviewThunk,
     findReviewsByAuthorThunk,
-    findReviewsByCourseThunk
+    findReviewsByCourseThunk,
+    findAllReviewsThunk
 } from "./reviews-thunks";
-import {findAllReviewsThunk} from "../movies/movies-thunks";
 
 const reviewsReducer = createSlice({
     name: 'reviews',

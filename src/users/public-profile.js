@@ -1,5 +1,5 @@
 import {Navigate, useNavigate, useParams} from "react-router";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {findUserByIdThunk} from "./users-thunk";
 import {findReviewsByAuthor} from "../reviews/reviews-service";
@@ -18,14 +18,17 @@ const PublicProfile = () => {
     const {currentUser} = useSelector((state) => state.users)
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    let startsFollowing = (currentUser && followers.map(follower => follower.follower._id).includes(currentUser._id))
+    console.log("starts", startsFollowing);
+    let [isFollowing, setIsFollowing] = useState(startsFollowing)
+
     const users_reviews = reviews.filter(
         review => review.author._id === uid).slice(-5);
-    let isFollowing = currentUser && followers.map(follower => follower.follower._id).includes(currentUser._id)
-
     const handleFollowBtn = () => {
+        setIsFollowing(true)
+        console.log('incalls',isFollowing)
         if (currentUser) {
             dispatch(followUserThunk({
-
                 followed: uid
             }))
         } else {
@@ -40,13 +43,13 @@ const PublicProfile = () => {
         dispatch(findFollowingThunk(uid))
     }, [uid])
     return(
-        <>
+        <div className="p-2">
             <>
 
                 <button
                     onClick={handleFollowBtn}
                     className="btn btn-success float-end"
-                    disabled={isFollowing}>
+                    disabled={isFollowing || startsFollowing}>
                     Follow
                 </button>
             </>
@@ -54,25 +57,42 @@ const PublicProfile = () => {
             Name:
             <h3>{publicProfile && publicProfile.firstName} {publicProfile && publicProfile.lastName}</h3>
             <br/>
-            <h2>Following:</h2>
-            <div className="list-group">
+            <h3>Following:</h3>
+            <div className="list-group p-2">
                 {
                     following && following.map((follow) =>
-                        <Link to={`/profile/${follow.followed._id}`} className="list-group-item">
-                            {follow.followed.username}
-                        </Link>
+                        <div className="list-group-item">
+                            <Link to={`/profile/${follow.followed._id}`} className="text-decoration-none">
+                                {follow.followed.username}
+                            </Link>
+                        </div>
                     )
+                }
+                {
+                    following.length === 0 &&
+                    <div className="text-secondary">
+                        This user is not following anyone
+                    </div>
                 }
             </div>
             <br/>
-            <h2>Followers:</h2>
-            <div className="list-group">
+            <h3>Followers:</h3>
+            <div className="list-group p-2">
                 {
                     followers && followers.map((follow) =>
-                        <Link to={`/profile/${follow.follower._id}`} className="list-group-item">
+                    <div className="list-group-item">
+                        <Link to={`/profile/${follow.follower._id}`} className="text-decoration-none">
                             {follow.follower.username}
                         </Link>
+                    </div>
                     )
+                }
+                {
+                    followers.length === 0 &&
+                    <div className="text-secondary">
+
+                        This user has no followers
+                    </div>
                 }
             </div>
             <br/>
@@ -84,8 +104,14 @@ const PublicProfile = () => {
                         <ReviewItem key={review._id} review={review}/>
                     )
                 }
+                {
+                    users_reviews.length === 0 &&
+                    <div className="text-secondary">
+                        This user has not made any reviews
+                    </div>
+                }
             </ul>
-        </>
+        </div>
     )
 }
 

@@ -1,15 +1,26 @@
+import {useNavigate} from "react-router"
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {findCourseBySearchTermThunk} from "./course-thunks";
 import {userLikesMovieThunk} from "../likes/likes-thunks";
 import {Link} from "react-router-dom";
+import {useParams} from "react-router";
 
 const CourseSearch = () => {
-    const [searchTerm, setSearchTerm] = useState('Software Development')
+    const {searchValue} = useParams()
+    console.log(searchValue)
+    const [searchTerm, setSearchTerm] = useState(searchValue)
     const {courses, loading} = useSelector((state) => state.courses)
     const dispatch = useDispatch()
-    useEffect(() => {
+    const navigate = useNavigate()
+    const onSearchClick = () => {
+        navigate(`/search/${searchTerm}`)
         dispatch(findCourseBySearchTermThunk(searchTerm))
+    }
+
+    useEffect(() => {
+        console.log(searchValue)
+        dispatch(findCourseBySearchTermThunk(searchValue))
     }, [])
     return (
         <>
@@ -18,7 +29,7 @@ const CourseSearch = () => {
                     <button
                         className="btn btn-primary float-end"
                         onClick={() => {
-                            dispatch(findCourseBySearchTermThunk(searchTerm))
+                            onSearchClick();
                         }}>Search
                     </button>
                     <input
@@ -31,11 +42,7 @@ const CourseSearch = () => {
                 {
                     courses && courses.map((course) =>
                         <li key={course._id} className="list-group-item">
-                            {/*<i onClick={() => {*/}
-                            {/*    dispatch(userLikesMovieThunk({*/}
-                            {/*        uid: 111, mid: movie.imdbID*/}
-                            {/*    }))*/}
-                            {/*}} className="float-end bi bi-hand-thumbs-up"></i>*/}
+
                             Name: <Link to={`/details/${course._id}`}>
                                 {course.name}
                             </Link>

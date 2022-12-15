@@ -1,0 +1,42 @@
+
+.score {
+    width: 50px;
+    height: 50px;
+    background-color: yellowgreen;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+}
+
+.sc-center {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: row;
+}
+
+.cl-red {
+    background-color: red
+}
+
+.cl-orange {
+    background-color: orange;
+}
+
+.cl-yellow {
+    background-color: yellow;
+}
+
+.cl-yellowgreen {
+    background-color: yellowgreen;
+}
+
+.cl-green {
+    background-color: green;
+}
+
+.cl-grey {
+    background-color: grey;
+}

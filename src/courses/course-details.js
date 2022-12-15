@@ -46,7 +46,6 @@ const CourseDetails = () => {
                         <li className="list-group-item">Course Number: {details.courseNumber}</li>
                         <li className="list-group-item">Course Name: {details.name}</li>
                         <li className="list-group-item">Section: {details.section}</li>
-                        {/*<li className="list-group-item">Average Rating: {}</li>*/}
                     </ul>
                 </div>
 
@@ -78,10 +77,14 @@ const CourseDetails = () => {
                         <ReviewItem key={review._id} review={review}/>
                     )
                 }
+                {
+                    reviews.length === 0 &&
+                    <div className="text-secondary">
+                        This course has no reivews
+                    </div>
+                }
             </ul>
-            {/*<pre>*/}
-            {/*    {JSON.stringify(details, null, 2)}*/}
-            {/*</pre>*/}
+
         </>
     )
 }

@@ -41,10 +41,10 @@ const Profile = () => {
     }
     return(
         <>
-            <h1>Profile</h1>
+            <h1></h1>
             {
                 currentUser &&
-                <h2>Your Profile: {currentUser.username}</h2>
+                <h2>Your Profile: @{currentUser.username}</h2>
             }
             <button
                 className="btn btn-danger"
@@ -108,6 +108,12 @@ const Profile = () => {
                         </Link>
                     )
                 }
+                {
+                    following.length === 0 &&
+                    <div className="text-secondary">
+                        You are not following anyone
+                    </div>
+                }
             </div>
 
             <h2>Followers</h2>
@@ -118,6 +124,12 @@ const Profile = () => {
                             {follow.follower.username}
                         </Link>
                     )
+                }
+                {
+                    following.length === 0 &&
+                    <div className="text-secondary">
+                        You have no followers
+                    </div>
                 }
             </div>
         </>

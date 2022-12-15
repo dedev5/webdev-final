@@ -1,5 +1,5 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {createReview, deleteReview, findReviewsByAuthor, findReviewsByCourse} from "./reviews-service";
+import {createReview, deleteReview, findAllReviews, findReviewsByAuthor, findReviewsByCourse} from "./reviews-service";
 import {findUserById} from "../users/users-service";
 
 export const createReviewThunk = createAsyncThunk(
@@ -9,7 +9,7 @@ export const createReviewThunk = createAsyncThunk(
         const response = await createReview(review)
         // Fill the author field out.
         response.author = await findUserById(response.author)
-        console.log(response.author)
+        // console.log(response.author)
         return response
     }
 )
@@ -20,6 +20,11 @@ export const deleteReviewThunk = createAsyncThunk(
         await deleteReview(reviewId)
         return reviewId
     }
+)
+
+export const findAllReviewsThunk = createAsyncThunk(
+    'findAllMovies',
+    () => findAllReviews()
 )
 
 export const findReviewsByCourseThunk = createAsyncThunk(
